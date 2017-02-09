@@ -50,9 +50,10 @@ class AntColonyOptimization:
                 self.tour.append(self.select_node())
             return self.tour
 
-    def __init__(self, mode='ACS', colony_size=10, alpha=1, beta=3, rho=0.1, q=1, steps=200, n_nodes=20):
+    def __init__(self, mode='ACS', colony_size=10, e=1, alpha=1, beta=3, rho=0.1, q=1, steps=200, n_nodes=20):
         self.mode = mode
         self.colony_size = colony_size
+        self.e = e
         self.rho = rho
         self.q = q
         self.steps = steps
@@ -70,22 +71,42 @@ class AntColonyOptimization:
         self.best_tour = None
         self.best_distance = float("inf")
 
+    def _deposit_pheromone(self, ant):
+        tour = ant.find_tour()
+        pheromone_to_add = self.q / ant.distance()
+        if ant.distance() < self.best_distance:
+            self.best_distance = ant.distance()
+            self.best_tour = tour
+            print(self.best_distance)
+            print(self.best_tour)
+        for i in range(self.n_nodes):
+            if i == self.n_nodes - 1:
+                edge = self.edges[tour[i]][tour[0]]
+            else:
+                edge = self.edges[tour[i]][tour[i + 1]]
+            edge.pheromone += pheromone_to_add
+
+    def _deposit_elitist_pheromone(self, ant):
+        tour = ant.find_tour()
+        pheromone_to_add = self.q / ant.distance()
+        for i in range(self.n_nodes):
+            if i == self.n_nodes - 1:
+                edge = self.edges[tour[i]][tour[0]]
+            else:
+                edge = self.edges[tour[i]][tour[i + 1]]
+            edge.pheromone += self.e * pheromone_to_add
+
     def run(self):
         for step in range(self.steps):
+            if self.mode == 'Elitist':
+                best_ant = None
             for ant in self.ants:
-                tour = ant.find_tour()
-                pheromone_to_add = self.q / ant.distance()
-                if ant.distance() < self.best_distance:
-                    self.best_distance = ant.distance()
-                    self.best_tour = tour
-                    print(self.best_distance)
-                    print(self.best_tour)
-                for i in range(self.n_nodes):
-                    if i == self.n_nodes - 1:
-                        edge = self.edges[tour[i]][tour[0]]
-                    else:
-                        edge = self.edges[tour[i]][tour[i + 1]]
-                    edge.pheromone += pheromone_to_add
+                self._deposit_pheromone(ant)
+                if self.mode == 'Elitist':
+                    if not best_ant or ant.distance() < best_ant.distance():
+                        best_ant = ant
+            if self.mode == 'Elitist':
+                self._deposit_elitist_pheromone(best_ant)
             for i in range(self.n_nodes):
                 for j in range(i + 1, self.n_nodes):
                     self.edges[i][j].pheromone *= (1 - self.rho)
@@ -101,6 +122,6 @@ class AntColonyOptimization:
 
 
 if __name__ == '__main__':
-    aco = AntColonyOptimization()
+    aco = AntColonyOptimization(mode='Elitist')
     aco.run()
     aco.draw_tour()
