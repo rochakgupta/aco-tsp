@@ -45,7 +45,7 @@ class AntColonyOptimization:
             return total
 
         def find_tour(self):
-            self.tour = [random.randint(0,self.n_nodes-1)]
+            self.tour = [random.randint(0, self.n_nodes - 1)]
             while len(self.tour) < self.n_nodes:
                 self.tour.append(self.select_node())
             return self.tour
@@ -93,9 +93,9 @@ class AntColonyOptimization:
     def draw_tour(self):
         img = Image.new('RGB', (750, 450))
         drw = ImageDraw.Draw(img)
-        drw.polygon([(self.nodes[node][0]+25,self.nodes[node][1]+25) for node in self.best_tour])
+        drw.polygon([(self.nodes[node][0] + 25, self.nodes[node][1] + 25) for node in self.best_tour])
         for node in self.best_tour:
-            drw.text((self.nodes[node][0]+25,self.nodes[node][1]+25), str(node))
+            drw.text((self.nodes[node][0] + 25, self.nodes[node][1] + 25), str(node))
         del drw
         img.save('tour.png', 'PNG')
 
