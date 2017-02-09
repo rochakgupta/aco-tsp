@@ -87,7 +87,7 @@ class AntColonyOptimization:
             edge.pheromone += pheromone_to_add
 
     def _deposit_elitist_pheromone(self, ant):
-        tour = ant.find_tour()
+        tour = ant.tour
         pheromone_to_add = self.q / ant.distance()
         for i in range(self.n_nodes):
             if i == self.n_nodes - 1:
@@ -103,7 +103,7 @@ class AntColonyOptimization:
             for ant in self.ants:
                 self._deposit_pheromone(ant)
                 if self.mode == 'Elitist':
-                    if not best_ant or ant.distance() < best_ant.distance():
+                    if best_ant is None or ant.distance() < best_ant.distance():
                         best_ant = ant
             if self.mode == 'Elitist':
                 self._deposit_elitist_pheromone(best_ant)
