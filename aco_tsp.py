@@ -75,36 +75,26 @@ class AntColonyOptimization:
         self.global_best_tour = None
         self.global_best_distance = float("inf")
 
-    def _add_pheromone(self, ant):
-        tour = ant.find_tour()
-        pheromone_to_add = self.pheromone_deposit_weight / ant.get_distance()
+    def _add_pheromone(self, tour, distance, weight=1):
+        pheromone_to_add = self.pheromone_deposit_weight / distance
         for i in range(self.n_nodes):
             if i == self.n_nodes - 1:
                 edge = self.edges[tour[i]][tour[0]]
             else:
                 edge = self.edges[tour[i]][tour[i + 1]]
-            edge.pheromone += pheromone_to_add
-
-    def _add_elitist_pheromone(self):
-        pheromone_to_add = self.pheromone_deposit_weight / self.global_best_distance
-        for i in range(self.n_nodes):
-            if i == self.n_nodes - 1:
-                edge = self.edges[self.global_best_tour[i]][self.global_best_tour[0]]
-            else:
-                edge = self.edges[self.global_best_tour[i]][self.global_best_tour[i + 1]]
-            edge.pheromone += self.elitist_weight * pheromone_to_add
+            edge.pheromone += weight * pheromone_to_add
 
     def run(self):
         for step in range(self.steps):
             for ant in self.ants:
-                self._add_pheromone(ant)
+                self._add_pheromone(ant.find_tour(), ant.get_distance())
                 if ant.distance < self.global_best_distance:
                     self.global_best_tour = ant.tour
                     self.global_best_distance = ant.distance
                     print(self.global_best_tour)
                     print(self.global_best_distance)
             if self.mode == 'Elitist':
-                self._add_elitist_pheromone()
+                self._add_pheromone(self.global_best_tour, self.global_best_distance, weight=self.elitist_weight)
             for i in range(self.n_nodes):
                 for j in range(i + 1, self.n_nodes):
                     self.edges[i][j].pheromone *= (1 - self.rho)
