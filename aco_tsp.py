@@ -50,7 +50,8 @@ class AntColonyOptimization:
                 self.tour.append(self.select_node())
             return self.tour
 
-    def __init__(self, mode='ACS', colony_size=10, elitist_weight=1, alpha=1, beta=3, rho=0.1, pheromone_deposit_weight=1, initial_pheromone=1, steps=200, n_nodes=20):
+    def __init__(self, mode='ACS', colony_size=10, elitist_weight=1, alpha=1, beta=3, rho=0.1, pheromone_deposit_weight=1,
+                 initial_pheromone=1, steps=200, n_nodes=20):
         self.mode = mode
         self.colony_size = colony_size
         self.elitist_weight = elitist_weight
