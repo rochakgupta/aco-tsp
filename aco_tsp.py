@@ -35,6 +35,12 @@ class AntColonyOptimization:
                 if wheel_position >= random_value:
                     return unvisited_node
 
+        def find_tour(self):
+            self.tour = [random.randint(0, self.n_nodes - 1)]
+            while len(self.tour) < self.n_nodes:
+                self.tour.append(self.select_node())
+            return self.tour
+
         def distance(self):
             total = 0
             for i in range(self.n_nodes):
@@ -43,12 +49,6 @@ class AntColonyOptimization:
                 else:
                     total += self.edges[self.tour[i]][self.tour[i + 1]].weight
             return total
-
-        def find_tour(self):
-            self.tour = [random.randint(0, self.n_nodes - 1)]
-            while len(self.tour) < self.n_nodes:
-                self.tour.append(self.select_node())
-            return self.tour
 
     def __init__(self, mode='ACS', colony_size=10, elitist_weight=1, alpha=1, beta=3, rho=0.1, pheromone_deposit_weight=1,
                  initial_pheromone=1, steps=200, n_nodes=20):
