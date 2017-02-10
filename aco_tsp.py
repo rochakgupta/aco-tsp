@@ -4,11 +4,11 @@ from PIL import ImageDraw, Image
 
 class AntColonyOptimization:
     class Edge:
-        def __init__(self, s, d, weight):
+        def __init__(self, s, d, weight, initial_pheromone):
             self.s = s
             self.d = d
             self.weight = weight
-            self.pheromone = 1
+            self.pheromone = initial_pheromone
 
     class Ant:
         def __init__(self, alpha, beta, n_nodes, edges):
@@ -50,7 +50,7 @@ class AntColonyOptimization:
                 self.tour.append(self.select_node())
             return self.tour
 
-    def __init__(self, mode='ACS', colony_size=10, e=1, alpha=1, beta=3, rho=0.1, q=1, steps=200, n_nodes=20):
+    def __init__(self, mode='ACS', colony_size=10, e=1, alpha=1, beta=3, rho=0.1, q=1, initial_pheromone=1, steps=200, n_nodes=20):
         self.mode = mode
         self.colony_size = colony_size
         self.e = e
@@ -62,7 +62,8 @@ class AntColonyOptimization:
         self.edges = [[None] * n_nodes for i in range(n_nodes)]
         for i in range(n_nodes):
             for j in range(i + 1, n_nodes):
-                edge = self.Edge(i, j, math.sqrt(pow(self.nodes[i][0] - self.nodes[j][0], 2) + pow(self.nodes[i][1] - self.nodes[j][1], 2)))
+                edge = self.Edge(i, j, math.sqrt(pow(self.nodes[i][0] - self.nodes[j][0], 2) + pow(self.nodes[i][1] - self.nodes[j][1], 2)),
+                                 initial_pheromone)
                 self.edges[i][j] = edge
                 self.edges[j][i] = edge
         self.ants = []
