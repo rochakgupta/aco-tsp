@@ -77,10 +77,10 @@ class AntColonyOptimization:
         tour = ant.find_tour()
         pheromone_to_add = self.pheromone_deposit_weight / ant.distance()
         if ant.distance() < self.best_distance:
-            self.best_distance = ant.distance()
             self.best_tour = tour
-            print(self.best_distance)
+            self.best_distance = ant.distance()
             print(self.best_tour)
+            print(self.best_distance)
         for i in range(self.n_nodes):
             if i == self.n_nodes - 1:
                 edge = self.edges[tour[i]][tour[0]]
@@ -88,27 +88,21 @@ class AntColonyOptimization:
                 edge = self.edges[tour[i]][tour[i + 1]]
             edge.pheromone += pheromone_to_add
 
-    def _update_elitist_pheromone(self, ant):
-        tour = ant.tour
-        pheromone_to_add = self.pheromone_deposit_weight / ant.distance()
+    def _update_elitist_pheromone(self):
+        pheromone_to_add = self.pheromone_deposit_weight / self.best_distance
         for i in range(self.n_nodes):
             if i == self.n_nodes - 1:
-                edge = self.edges[tour[i]][tour[0]]
+                edge = self.edges[self.best_tour[i]][self.best_tour[0]]
             else:
-                edge = self.edges[tour[i]][tour[i + 1]]
+                edge = self.edges[self.best_tour[i]][self.best_tour[i + 1]]
             edge.pheromone += self.elitist_weight * pheromone_to_add
 
     def run(self):
         for step in range(self.steps):
-            if self.mode == 'Elitist':
-                best_ant = None
             for ant in self.ants:
                 self._update_pheromone(ant)
-                if self.mode == 'Elitist':
-                    if best_ant is None or ant.distance() < best_ant.distance():
-                        best_ant = ant
             if self.mode == 'Elitist':
-                self._update_elitist_pheromone(best_ant)
+                self._update_elitist_pheromone()
             for i in range(self.n_nodes):
                 for j in range(i + 1, self.n_nodes):
                     self.edges[i][j].pheromone *= (1 - self.rho)
