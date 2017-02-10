@@ -1,4 +1,5 @@
-import random, math
+import math
+import random
 from PIL import ImageDraw, Image
 
 
@@ -71,8 +72,8 @@ class AntColonyOptimization:
         self.ants = []
         for i in range(self.colony_size):
             self.ants.append(self.Ant(alpha, beta, n_nodes, self.edges))
-        self.best_tour = None
-        self.best_distance = float("inf")
+        self.global_best_tour = None
+        self.global_best_distance = float("inf")
 
     def _update_pheromone(self, ant):
         tour = ant.find_tour()
@@ -85,23 +86,23 @@ class AntColonyOptimization:
             edge.pheromone += pheromone_to_add
 
     def _update_elitist_pheromone(self):
-        pheromone_to_add = self.pheromone_deposit_weight / self.best_distance
+        pheromone_to_add = self.pheromone_deposit_weight / self.global_best_distance
         for i in range(self.n_nodes):
             if i == self.n_nodes - 1:
-                edge = self.edges[self.best_tour[i]][self.best_tour[0]]
+                edge = self.edges[self.global_best_tour[i]][self.global_best_tour[0]]
             else:
-                edge = self.edges[self.best_tour[i]][self.best_tour[i + 1]]
+                edge = self.edges[self.global_best_tour[i]][self.global_best_tour[i + 1]]
             edge.pheromone += self.elitist_weight * pheromone_to_add
 
     def run(self):
         for step in range(self.steps):
             for ant in self.ants:
                 self._update_pheromone(ant)
-                if ant.distance < self.best_distance:
-                    self.best_tour = ant.tour
-                    self.best_distance = ant.distance
-                    print(self.best_tour)
-                    print(self.best_distance)
+                if ant.distance < self.global_best_distance:
+                    self.global_best_tour = ant.tour
+                    self.global_best_distance = ant.distance
+                    print(self.global_best_tour)
+                    print(self.global_best_distance)
             if self.mode == 'Elitist':
                 self._update_elitist_pheromone()
             for i in range(self.n_nodes):
@@ -111,8 +112,8 @@ class AntColonyOptimization:
     def draw_tour(self):
         img = Image.new('RGB', (750, 450))
         drw = ImageDraw.Draw(img)
-        drw.polygon([(self.nodes[node][0] + 25, self.nodes[node][1] + 25) for node in self.best_tour])
-        for node in self.best_tour:
+        drw.polygon([(self.nodes[node][0] + 25, self.nodes[node][1] + 25) for node in self.global_best_tour])
+        for node in self.global_best_tour:
             drw.text((self.nodes[node][0] + 25, self.nodes[node][1] + 25), str(node))
         del drw
         img.save('tour.png', 'PNG')
