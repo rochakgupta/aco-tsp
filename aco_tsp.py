@@ -17,6 +17,7 @@ class AntColonyOptimization:
             self.n_nodes = n_nodes
             self.edges = edges
             self.tour = None
+            self.distance = 0
 
         def select_node(self):
             roulette_wheel = 0
@@ -41,14 +42,14 @@ class AntColonyOptimization:
                 self.tour.append(self.select_node())
             return self.tour
 
-        def distance(self):
-            total = 0
+        def get_distance(self):
+            self.distance = 0
             for i in range(self.n_nodes):
                 if i == self.n_nodes - 1:
-                    total += self.edges[self.tour[i]][self.tour[0]].weight
+                    self.distance += self.edges[self.tour[i]][self.tour[0]].weight
                 else:
-                    total += self.edges[self.tour[i]][self.tour[i + 1]].weight
-            return total
+                    self.distance += self.edges[self.tour[i]][self.tour[i + 1]].weight
+            return self.distance
 
     def __init__(self, mode='ACS', colony_size=10, elitist_weight=1, alpha=1, beta=3, rho=0.1, pheromone_deposit_weight=1,
                  initial_pheromone=1, steps=200, n_nodes=20):
@@ -75,12 +76,7 @@ class AntColonyOptimization:
 
     def _update_pheromone(self, ant):
         tour = ant.find_tour()
-        pheromone_to_add = self.pheromone_deposit_weight / ant.distance()
-        if ant.distance() < self.best_distance:
-            self.best_tour = tour
-            self.best_distance = ant.distance()
-            print(self.best_tour)
-            print(self.best_distance)
+        pheromone_to_add = self.pheromone_deposit_weight / ant.get_distance()
         for i in range(self.n_nodes):
             if i == self.n_nodes - 1:
                 edge = self.edges[tour[i]][tour[0]]
@@ -101,6 +97,11 @@ class AntColonyOptimization:
         for step in range(self.steps):
             for ant in self.ants:
                 self._update_pheromone(ant)
+                if ant.distance < self.best_distance:
+                    self.best_tour = ant.tour
+                    self.best_distance = ant.distance
+                    print(self.best_tour)
+                    print(self.best_distance)
             if self.mode == 'Elitist':
                 self._update_elitist_pheromone()
             for i in range(self.n_nodes):
