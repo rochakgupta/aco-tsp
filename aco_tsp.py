@@ -20,7 +20,7 @@ class AntColonyOptimization:
             self.tour = None
             self.distance = 0
 
-        def select_node(self):
+        def _select_node(self):
             roulette_wheel = 0
             unvisited_nodes = [node for node in range(self.n_nodes) if node not in self.tour]
             heuristic_total = 0
@@ -40,7 +40,7 @@ class AntColonyOptimization:
         def find_tour(self):
             self.tour = [random.randint(0, self.n_nodes - 1)]
             while len(self.tour) < self.n_nodes:
-                self.tour.append(self.select_node())
+                self.tour.append(self._select_node())
             return self.tour
 
         def get_distance(self):
