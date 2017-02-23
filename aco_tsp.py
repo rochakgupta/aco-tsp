@@ -53,7 +53,7 @@ class AntColonyOptimization:
             return self.distance
 
     def __init__(self, mode='ACS', colony_size=10, elitist_weight=1, min_scaling_factor=0.001, alpha=1, beta=3, rho=0.1,
-                 pheromone_deposit_weight=1, initial_pheromone=1, steps=200, n_nodes=20):
+                 pheromone_deposit_weight=1, initial_pheromone=1, steps=200, n_nodes=20, nodes=None):
         self.mode = mode
         self.colony_size = colony_size
         self.elitist_weight = elitist_weight
@@ -61,9 +61,13 @@ class AntColonyOptimization:
         self.rho = rho
         self.pheromone_deposit_weight = pheromone_deposit_weight
         self.steps = steps
-        self.n_nodes = n_nodes
-        self.nodes = [(random.randint(0, 700), random.randint(0, 400)) for i in range(n_nodes)]
-        self.edges = [[None] * n_nodes for i in range(n_nodes)]
+        if nodes:
+            self.n_nodes = len(nodes)
+            self.nodes = nodes
+        else:
+            self.n_nodes = n_nodes
+            self.nodes = [(random.randint(0, 700), random.randint(0, 400)) for i in range(n_nodes)]
+        self.edges = [[None] * self.n_nodes for i in range(self.n_nodes)]
         for i in range(n_nodes):
             for j in range(i + 1, n_nodes):
                 edge = self.Edge(i, j, math.sqrt(pow(self.nodes[i][0] - self.nodes[j][0], 2) + pow(self.nodes[i][1] - self.nodes[j][1], 2)),
@@ -92,8 +96,6 @@ class AntColonyOptimization:
                 if ant.distance < self.global_best_distance:
                     self.global_best_tour = ant.tour
                     self.global_best_distance = ant.distance
-                    print(self.global_best_tour)
-                    print(self.global_best_distance)
             for i in range(self.n_nodes):
                 for j in range(i + 1, self.n_nodes):
                     self.edges[i][j].pheromone *= (1 - self.rho)
@@ -105,8 +107,6 @@ class AntColonyOptimization:
                 if ant.distance < self.global_best_distance:
                     self.global_best_tour = ant.tour
                     self.global_best_distance = ant.distance
-                    print(self.global_best_tour)
-                    print(self.global_best_distance)
             self._add_pheromone(self.global_best_tour, self.global_best_distance, weight=self.elitist_weight)
             for i in range(self.n_nodes):
                 for j in range(i + 1, self.n_nodes):
@@ -149,17 +149,28 @@ class AntColonyOptimization:
         else:
             print('Wrong mode. Choose ACS or Elitist or MaxMin')
 
-    def draw_tour(self):
+    def draw_tour(self, name=None):
         img = Image.new('RGB', (750, 450))
         drw = ImageDraw.Draw(img)
         drw.polygon([(self.nodes[node][0] + 25, self.nodes[node][1] + 25) for node in self.global_best_tour])
         for node in self.global_best_tour:
             drw.text((self.nodes[node][0] + 25, self.nodes[node][1] + 25), str(node))
         del drw
-        img.save('tour.png', 'PNG')
+        if not name:
+            name = self.mode + '_tour.png'
+        img.save(name, 'PNG')
 
 
 if __name__ == '__main__':
-    aco = AntColonyOptimization(mode='MaxMin')
-    aco.run()
-    aco.draw_tour()
+    acs = AntColonyOptimization(mode='ACS')
+    acs.run()
+    acs.draw_tour()
+    print(acs.global_best_distance)
+    elitist = AntColonyOptimization(mode='Elitist', nodes=acs.nodes)
+    elitist.run()
+    elitist.draw_tour()
+    print(elitist.global_best_distance)
+    maxmin = AntColonyOptimization(mode='MaxMin', nodes=acs.nodes)
+    maxmin.run()
+    maxmin.draw_tour()
+    print(maxmin.global_best_distance)
