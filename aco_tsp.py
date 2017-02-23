@@ -27,13 +27,13 @@ class AntColonyOptimization:
             for unvisited_node in unvisited_nodes:
                 heuristic_total += self.edges[self.tour[-1]][unvisited_node].weight
             for unvisited_node in unvisited_nodes:
-                roulette_wheel += pow(self.edges[self.tour[-1]][unvisited_node].pheromone, self.alpha) * pow(
-                    (heuristic_total / self.edges[self.tour[-1]][unvisited_node].weight), self.beta)
+                roulette_wheel += pow(self.edges[self.tour[-1]][unvisited_node].pheromone, self.alpha) * \
+                                  pow((heuristic_total / self.edges[self.tour[-1]][unvisited_node].weight), self.beta)
             random_value = random.uniform(0, roulette_wheel)
             wheel_position = 0
             for unvisited_node in unvisited_nodes:
-                wheel_position += pow(self.edges[self.tour[-1]][unvisited_node].pheromone, self.alpha) * pow(
-                    (heuristic_total / self.edges[self.tour[-1]][unvisited_node].weight), self.beta)
+                wheel_position += pow(self.edges[self.tour[-1]][unvisited_node].pheromone, self.alpha) * \
+                                  pow((heuristic_total / self.edges[self.tour[-1]][unvisited_node].weight), self.beta)
                 if wheel_position >= random_value:
                     return unvisited_node
 
@@ -52,8 +52,8 @@ class AntColonyOptimization:
                     self.distance += self.edges[self.tour[i]][self.tour[i + 1]].weight
             return self.distance
 
-    def __init__(self, mode='ACS', colony_size=10, elitist_weight=1, min_scaling_factor=0.001, alpha=1, beta=3, rho=0.1,
-                 pheromone_deposit_weight=1, initial_pheromone=1, steps=200, n_nodes=20, nodes=None):
+    def __init__(self, mode='ACS', colony_size=10, elitist_weight=1, min_scaling_factor=0.001, alpha=1, beta=3,
+                 rho=0.1, pheromone_deposit_weight=1, initial_pheromone=1, steps=200, n_nodes=20, nodes=None):
         self.mode = mode
         self.colony_size = colony_size
         self.elitist_weight = elitist_weight
@@ -67,10 +67,11 @@ class AntColonyOptimization:
         else:
             self.n_nodes = n_nodes
             self.nodes = [(random.randint(0, 700), random.randint(0, 400)) for i in range(n_nodes)]
-        self.edges = [[None] * self.n_nodes for i in range(self.n_nodes)]
+        self.edges = [[None] * n_nodes for i in range(n_nodes)]
         for i in range(n_nodes):
             for j in range(i + 1, n_nodes):
-                edge = self.Edge(i, j, math.sqrt(pow(self.nodes[i][0] - self.nodes[j][0], 2) + pow(self.nodes[i][1] - self.nodes[j][1], 2)),
+                edge = self.Edge(i, j, math.sqrt(
+                    pow(self.nodes[i][0] - self.nodes[j][0], 2) + pow(self.nodes[i][1] - self.nodes[j][1], 2)),
                                  initial_pheromone)
                 self.edges[i][j] = edge
                 self.edges[j][i] = edge
@@ -170,7 +171,7 @@ if __name__ == '__main__':
     elitist.run()
     elitist.draw_tour()
     print(elitist.global_best_distance)
-    maxmin = AntColonyOptimization(mode='MaxMin', nodes=acs.nodes)
-    maxmin.run()
-    maxmin.draw_tour()
-    print(maxmin.global_best_distance)
+    max_min = AntColonyOptimization(mode='MaxMin', nodes=acs.nodes)
+    max_min.run()
+    max_min.draw_tour()
+    print(max_min.global_best_distance)
