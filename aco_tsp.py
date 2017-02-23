@@ -67,9 +67,9 @@ class AntColonyOptimization:
         else:
             self.n_nodes = n_nodes
             self.nodes = [(random.randint(0, 700), random.randint(0, 400)) for i in range(n_nodes)]
-        self.edges = [[None] * n_nodes for i in range(n_nodes)]
-        for i in range(n_nodes):
-            for j in range(i + 1, n_nodes):
+        self.edges = [[None] * self.n_nodes for i in range(self.n_nodes)]
+        for i in range(self.n_nodes):
+            for j in range(i + 1, self.n_nodes):
                 edge = self.Edge(i, j, math.sqrt(
                     pow(self.nodes[i][0] - self.nodes[j][0], 2) + pow(self.nodes[i][1] - self.nodes[j][1], 2)),
                                  initial_pheromone)
@@ -77,7 +77,7 @@ class AntColonyOptimization:
                 self.edges[j][i] = edge
         self.ants = []
         for i in range(self.colony_size):
-            self.ants.append(self.Ant(alpha, beta, n_nodes, self.edges))
+            self.ants.append(self.Ant(alpha, beta, self.n_nodes, self.edges))
         self.global_best_tour = None
         self.global_best_distance = float("inf")
 
