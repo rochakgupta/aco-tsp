@@ -53,7 +53,7 @@ class AntColonyOptimization:
             return self.distance
 
     def __init__(self, mode='ACS', colony_size=10, elitist_weight=1, min_scaling_factor=0.001, alpha=1, beta=3,
-                 rho=0.1, pheromone_deposit_weight=1, initial_pheromone=1, steps=200, n_nodes=20, nodes=None):
+                 rho=0.1, pheromone_deposit_weight=1, initial_pheromone=1, steps=100, n_nodes=20, nodes=None):
         self.mode = mode
         self.colony_size = colony_size
         self.elitist_weight = elitist_weight
@@ -151,11 +151,12 @@ class AntColonyOptimization:
             print('Wrong mode. Choose ACS or Elitist or MaxMin')
 
     def draw_tour(self, name=None):
-        img = Image.new('RGB', (750, 450))
+        img = Image.new('RGB', (750, 450), "white")
         drw = ImageDraw.Draw(img)
-        drw.polygon([(self.nodes[node][0] + 25, self.nodes[node][1] + 25) for node in self.global_best_tour])
+        drw.polygon([(self.nodes[node][0] + 25, self.nodes[node][1] + 25) for node in self.global_best_tour],
+                    fill="white", outline="black")
         for node in self.global_best_tour:
-            drw.text((self.nodes[node][0] + 25, self.nodes[node][1] + 25), str(node))
+            drw.text((self.nodes[node][0] + 25, self.nodes[node][1] + 25), str(node), "black")
         del drw
         if not name:
             name = self.mode + '_tour.png'
