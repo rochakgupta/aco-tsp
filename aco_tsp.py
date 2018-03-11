@@ -166,12 +166,12 @@ class SolveTSPUsingACO:
 
 
 if __name__ == '__main__':
-    acs = SolveTSPUsingACO(mode='ACS', num_nodes=30, x_range=(-400, 400), y_range=(-400, 400))
+    acs = SolveTSPUsingACO(mode='ACS', steps=50, num_nodes=15, x_range=(-400, 400), y_range=(-400, 400))
     acs.run()
     acs.plot()
-    elitist = SolveTSPUsingACO(mode='Elitist', nodes=acs.nodes)
+    elitist = SolveTSPUsingACO(mode='Elitist', steps=50, nodes=acs.nodes)
     elitist.run()
     elitist.plot()
-    max_min = SolveTSPUsingACO(mode='MaxMin', nodes=acs.nodes)
+    max_min = SolveTSPUsingACO(mode='MaxMin', steps=50, nodes=acs.nodes)
     max_min.run()
     max_min.plot()
