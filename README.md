@@ -26,7 +26,8 @@ max_min = SolveTSPUsingACO(mode='MaxMin', steps=50, nodes=acs.nodes)
 max_min.run()
 max_min.plot()
 ```
-##### Output
+
+#### Output
 ```
 Started: ACS
 Ended: ACS
@@ -43,7 +44,8 @@ Ended: MaxMin
 Tour: [4 -> 15 -> 7 -> 12 -> 9 -> 3 -> 2 -> 1 -> 13 -> 14 -> 8 -> 5 -> 11 -> 6 -> 10 -> 4]
 Distance: 2705.84
 ```
-##### Plots
+
+#### Plots
 ACS  
 ![ACS Tour](ACS_tour.png "ACS Tour")  
 Elitist  
