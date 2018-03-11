@@ -1,29 +1,55 @@
-# Solving Travelling Salesman Problem using Ant Colony Optimization (ACS/Elitist/MaxMin)
+## Solving Travelling Salesman Problem using Ant Colony Optimization
 
-**Reference** - www.theprojectspot.com/tutorial-post/ant-colony-optimization-for-hackers/10
+#### Install dependencies
+`pip install -r requirements.txt`
 
-**Recommended** - Python 2.7
+#### Usage
+The demo is given in the last section of the file. You can also import this file and do the following -
+```python
+// Instantiate SolveTSPUsingACO passing the desired parameters
+acs = SolveTSPUsingACO(mode='ACS')
+// Run the optimization
+acs.run()
+// Plot the tour
+acs.plot()
+```
 
-You will have to install **Pillow** as a requirement to use **draw_tour()**
+#### Example
+```python
+acs = SolveTSPUsingACO(mode='ACS', steps=50, num_nodes=15, x_range=(-400, 400), y_range=(-400, 400))
+acs.run()
+acs.plot()
+elitist = SolveTSPUsingACO(mode='Elitist', steps=50, nodes=acs.nodes)
+elitist.run()
+elitist.plot()
+max_min = SolveTSPUsingACO(mode='MaxMin', steps=50, nodes=acs.nodes)
+max_min.run()
+max_min.plot()
+```
+##### Output
+```
+Started: ACS
+Ended: ACS
+Tour: [6 -> 10 -> 4 -> 15 -> 7 -> 12 -> 2 -> 3 -> 1 -> 9 -> 14 -> 13 -> 8 -> 5 -> 11 -> 6]
+Distance: 2761.06
 
-The demo is given in the last section of the file. You can also import this file into another and follow the steps below -
-1. Create an object of the AntColonyOptimization class passing the desired parameters -
-   - `acs = AntColonyOptimization(mode='ACS')` or
-   - `acs = AntColonyOptimization(mode='ACS', nodes=[(1,3),(5,6),(2,5),(30,4)])`
-2. Run the optimization -
-    `acs.run()`
-3. Draw the tour -
-    `acs.draw_tour()`
+Started: Elitist
+Ended: Elitist
+Tour: [2 -> 3 -> 1 -> 9 -> 13 -> 14 -> 8 -> 5 -> 11 -> 6 -> 10 -> 4 -> 15 -> 7 -> 12 -> 2]
+Distance: 2740.04
 
-**Demo Output** - 
-1. ACS
+Started: MaxMin
+Ended: MaxMin
+Tour: [4 -> 15 -> 7 -> 12 -> 9 -> 3 -> 2 -> 1 -> 13 -> 14 -> 8 -> 5 -> 11 -> 6 -> 10 -> 4]
+Distance: 2705.84
+```
+##### Plots
+ACS  
+![ACS Tour](ACS_tour.png "ACS Tour")  
+Elitist  
+![Elitist Tour](Elitist_tour.png "Elitist Tour")   
+MaxMin  
+![MaxMin Tour](MaxMin_tour.png "MaxMin Tour")
 
-![image](https://cloud.githubusercontent.com/assets/14920774/24602433/60adab84-187a-11e7-811b-a827ed48650f.png)
-
-2. Elitist
-
-![image](https://cloud.githubusercontent.com/assets/14920774/24602450/6baf85c0-187a-11e7-98a1-3416004f0dbd.png)
-
-3. MaxMin
-
-![image](https://cloud.githubusercontent.com/assets/14920774/24602452/6fde2b2e-187a-11e7-80a6-556e734f840a.png)
+#### Reference
+www.theprojectspot.com/tutorial-post/ant-colony-optimization-for-hackers/10
