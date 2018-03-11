@@ -156,7 +156,7 @@ class SolveTSPUsingACO:
         plt.scatter(x, y, s=math.pi * (point_radius ** 2.0))
         plt.title(self.mode)
         for i in self.global_best_tour:
-            plt.annotate(i, self.nodes[i], size=annotation_size)
+            plt.annotate(i + 1, self.nodes[i], size=annotation_size)
         if save:
             if name is None:
                 name = '{0}_tour.png'.format(self.mode)
@@ -166,12 +166,12 @@ class SolveTSPUsingACO:
 
 
 if __name__ == '__main__':
-    acs = SolveTSPUsingACO(mode='ACS', steps=50, num_nodes=15, x_range=(-400, 400), y_range=(-400, 400))
+    acs = SolveTSPUsingACO(mode='ACS', colony_size=5, steps=50, num_nodes=15, x_range=(-400, 400), y_range=(-400, 400))
     acs.run()
     acs.plot()
-    elitist = SolveTSPUsingACO(mode='Elitist', steps=50, nodes=acs.nodes)
+    elitist = SolveTSPUsingACO(mode='Elitist', colony_size=5, steps=50, nodes=acs.nodes)
     elitist.run()
     elitist.plot()
-    max_min = SolveTSPUsingACO(mode='MaxMin', steps=50, nodes=acs.nodes)
+    max_min = SolveTSPUsingACO(mode='MaxMin', colony_size=5, steps=50, nodes=acs.nodes)
     max_min.run()
     max_min.plot()

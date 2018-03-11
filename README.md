@@ -16,13 +16,13 @@ acs.plot()
 
 #### Example
 ```python
-acs = SolveTSPUsingACO(mode='ACS', steps=50, num_nodes=15, x_range=(-400, 400), y_range=(-400, 400))
+acs = SolveTSPUsingACO(mode='ACS', colony_size=5, steps=50, num_nodes=15, x_range=(-400, 400), y_range=(-400, 400))
 acs.run()
 acs.plot()
-elitist = SolveTSPUsingACO(mode='Elitist', steps=50, nodes=acs.nodes)
+elitist = SolveTSPUsingACO(mode='Elitist', colony_size=5, steps=50, nodes=acs.nodes)
 elitist.run()
 elitist.plot()
-max_min = SolveTSPUsingACO(mode='MaxMin', steps=50, nodes=acs.nodes)
+max_min = SolveTSPUsingACO(mode='MaxMin', colony_size=5, steps=50, nodes=acs.nodes)
 max_min.run()
 max_min.plot()
 ```
@@ -31,18 +31,18 @@ max_min.plot()
 ```
 Started: ACS
 Ended: ACS
-Tour: [6 -> 10 -> 4 -> 15 -> 7 -> 12 -> 2 -> 3 -> 1 -> 9 -> 14 -> 13 -> 8 -> 5 -> 11 -> 6]
-Distance: 2761.06
+Tour: [2 -> 14 -> 1 -> 6 -> 12 -> 15 -> 8 -> 4 -> 7 -> 3 -> 5 -> 10 -> 13 -> 11 -> 9 -> 2]
+Distance: 2893.66
 
 Started: Elitist
 Ended: Elitist
-Tour: [2 -> 3 -> 1 -> 9 -> 13 -> 14 -> 8 -> 5 -> 11 -> 6 -> 10 -> 4 -> 15 -> 7 -> 12 -> 2]
-Distance: 2740.04
+Tour: [4 -> 8 -> 15 -> 12 -> 6 -> 1 -> 14 -> 2 -> 9 -> 11 -> 13 -> 10 -> 5 -> 7 -> 3 -> 4]
+Distance: 2818.66
 
 Started: MaxMin
 Ended: MaxMin
-Tour: [4 -> 15 -> 7 -> 12 -> 9 -> 3 -> 2 -> 1 -> 13 -> 14 -> 8 -> 5 -> 11 -> 6 -> 10 -> 4]
-Distance: 2705.84
+Tour: [7 -> 3 -> 4 -> 8 -> 15 -> 12 -> 6 -> 1 -> 14 -> 2 -> 9 -> 11 -> 13 -> 10 -> 5 -> 7]
+Distance: 2818.66
 ```
 
 #### Plots
