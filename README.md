@@ -6,6 +6,7 @@
 ### Usage
 The demo is given in the last section of the file. You can also import this file and do the following -
 ```python
+import random
 # Instantiate SolveTSPUsingACO passing the desired parameters
 acs = SolveTSPUsingACO(mode='ACS', nodes=[(random.uniform(-400, 400), random.uniform(-400, 400)) for _ in range(0, 15)])
 # Run the optimization
