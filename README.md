@@ -49,12 +49,9 @@ Sequence : <- 12 - 2 - 11 - 10 - 9 - 14 - 4 - 7 - 13 - 8 - 15 - 5 - 1 - 6 - 3 ->
 Total distance travelled to complete the tour : 2780.43
 ```
 
-#### Plots
-ACS  
+#### Plots 
 ![ACS Tour](ACS_tour.png "ACS Tour")  
-Elitist  
 ![Elitist Tour](Elitist_tour.png "Elitist Tour")   
-MaxMin  
 ![MaxMin Tour](MaxMin_tour.png "MaxMin Tour")
 
 ### Reference
