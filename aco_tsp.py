@@ -153,7 +153,7 @@ class SolveTSPUsingACO:
             plt.annotate(self.labels[i], self.nodes[i], size=annotation_size)
         if save:
             if name is None:
-                name = '{0}_tour.png'.format(self.mode)
+                name = '{0}.png'.format(self.mode)
             plt.savefig(name, dpi=dpi)
         plt.show()
         plt.gcf().clear()

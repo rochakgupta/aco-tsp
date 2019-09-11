@@ -50,9 +50,9 @@ Total distance travelled to complete the tour : 2780.43
 ```
 
 #### Plots 
-![ACS Tour](ACS_tour.png "ACS Tour")  
-![Elitist Tour](Elitist_tour.png "Elitist Tour")   
-![MaxMin Tour](MaxMin_tour.png "MaxMin Tour")
+![ACS Tour](tour_plots/ACS.png "ACS Tour")  
+![Elitist Tour](tour_plots/Elitist.png "Elitist Tour")   
+![MaxMin Tour](tour_plots/MaxMin.png "MaxMin Tour")
 
 ### Reference
 www.theprojectspot.com/tutorial-post/ant-colony-optimization-for-hackers/10
